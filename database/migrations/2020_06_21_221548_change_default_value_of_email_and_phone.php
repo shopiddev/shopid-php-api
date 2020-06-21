@@ -14,8 +14,8 @@ class ChangeDefaultValueOfEmailAndPhone extends Migration
     public function up()
     {
         Schema::table('users', function ($table) {
-        $table->integer('email')->nullable()->change();
-		$table->integer('phone')->nullable()->change();
+        $table->string('email')->nullable()->change();
+		$table->string('phone')->nullable()->change();
         });
 		
 		
@@ -29,8 +29,8 @@ class ChangeDefaultValueOfEmailAndPhone extends Migration
     public function down()
     {
         Schema::table('users', function ($table) {
-        $table->integer('email')->nullable()->change();
-		$table->integer('phone')->nullable()->change();
+        $table->string('email')->nullable()->change();
+		$table->string('phone')->nullable()->change();
         });
     }
 }
