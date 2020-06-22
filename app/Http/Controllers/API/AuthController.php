@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\API;
 
 use App\Client;
@@ -14,70 +13,105 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     //
-	public function register(Request $request) {
+    public function register(Request $request)
+    {
 
-	
+        if (preg_match('!@!is', $request->username))
+        {
 
-	
-	
-
-          if (preg_match('!@!is',$request->username)) {
-
-		          $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all() , [
 
             'username' => ['unique:users,email'],
 
-        ]);
-			
-		if ($validator->fails()) {
-			
-			  return response(array("fail"));
-			  
-		} else {
-		  
-		  
-               $user=  User::create([
-                   
-                    'email' => $request['username'],
-                    'password' => Hash::make($request['password']),
-                    ]);
-					
-		}
+            ]);
 
+            if ($validator->fails())
+            {
 
-          } else {
+                return response(array(
+                    "fail"
+                ));
 
+            }
+            else
+            {
 
-        $validator = Validator::make($request->all(), [
+                $user = User::create([
+
+                'email' => $request['username'], 'password' => Hash::make($request['password']) , ]);
+
+            }
+
+        }
+        else
+        {
+
+            $validator = Validator::make($request->all() , [
 
             'username' => ['unique:users,phone'],
 
-        ]);
-			
-		if ($validator->fails()) {
-			
-			  return response(array("fail"));
-			  
-		} else {
-	
-              $user=  User::create([
-                   
-                    'phone' => $request['username'],
-                    'password' => Hash::make($request['password']),
-                    ]);
-               
-               }
+            ]);
 
-		  } 
+            if ($validator->fails())
+            {
 
-		  
-		  
-		  if (isset($user)) {
-			   $accessToken = $user->createToken('authToken')->accessToken;
-               return response([ 'user' => $user, 'access_token' => $accessToken]);
-		  }
+                return response(array(
+                    "fail"
+                ));
 
+            }
+            else
+            {
 
+                $user = User::create([
 
-     }
+                'phone' => $request['username'], 'password' => Hash::make($request['password']) , ]);
+
+            }
+
+        }
+
+        if (isset($user))
+        {
+            $accessToken = $user->createToken('authToken')->accessToken;
+            return response(['user' => $user, 'access_token' => $accessToken]);
+        }
+
+    }
+
+    public function login(Request $request)
+    {
+
+        if (isset($request->username) && isset($request->password))
+        {
+
+            if (preg_match('!@!is', $request->username))
+            {
+
+                $logedin = Auth::attempt(['email' => $request->username, 'password' => $request->password]);
+            }
+            else
+            {
+                $logedin = Auth::attempt(['phone' => $request->username, 'password' => $request->password]);
+            }
+
+        }
+
+        if (!$logedin)
+        {
+            return response()->json(['message' => 'failed'], 200);
+        }
+        else
+        {
+            $user = $request->user();
+            $tokenResult = $user->createToken('Personal Access Token');
+            $token = $tokenResult->token;
+            $token->save();
+
+            return response()
+                ->json(['token' => $tokenResult->accessToken, ]);
+        }
+
+    }
 }
+
