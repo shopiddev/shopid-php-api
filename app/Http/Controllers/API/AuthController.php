@@ -19,7 +19,7 @@ class AuthController extends Controller
           if (preg_match('!@!is',$request->username)) {
 
                $user=  User::create([
-                    'name' => "new",
+                   
                     'email' => $request['username'],
                     'password' => Hash::make($request['password']),
                     ]);
@@ -29,7 +29,7 @@ class AuthController extends Controller
 
 
               $user=  User::create([
-                    'name' => "new",
+                   
                     'phone' => $request['username'],
                     'password' => Hash::make($request['password']),
                     ]);
