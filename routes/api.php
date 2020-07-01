@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', 'API\AuthController@register');
 Route::post('/login', 'API\AuthController@login');
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware('apiauth')->get('/user', function (Request $request) {
+	//sleep(6);
     return $request->user();
+	//return array("ok");
 });
