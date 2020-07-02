@@ -56,8 +56,8 @@ class AuthController extends Controller
             {
 
                 return response(array(
-                    "fail"
-                ));
+                    "message"=>"signup-failed"
+                ),401);
 
             }
             else
@@ -74,13 +74,15 @@ class AuthController extends Controller
         if (isset($user))
         {
             $accessToken = $user->createToken('authToken')->accessToken;
-            return response(['user' => $user, 'token' => $accessToken]);
+            return response(['user' => $user, 'token' => $accessToken,'message'=>"signedup"]);
         }
 
     }
 
     public function login(Request $request)
     {
+		
+		$logedin = false;
 
         if (isset($request->username) && isset($request->password))
         {
@@ -99,7 +101,7 @@ class AuthController extends Controller
 
         if (!$logedin)
         {
-            return response()->json(['message' => 'failed'], 200);
+            return response()->json(['message' => 'wrong-user-pass'], 401);
         }
         else
         {
@@ -109,7 +111,10 @@ class AuthController extends Controller
             $token->save();
 
             return response()
-                ->json(['token' => $tokenResult->accessToken, ]);
+                ->json([
+				'token' => $tokenResult->accessToken,
+				'message'=>"loggedin"
+				]);
         }
 
     }
