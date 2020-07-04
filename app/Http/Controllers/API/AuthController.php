@@ -65,7 +65,12 @@ class AuthController extends Controller
 
                 $user = User::create([
 
-                'phone' => $request['username'], 'password' => Hash::make($request['password']) , ]);
+                'phone' => $request['username'],
+				'password' => Hash::make($request['password']) ,
+				'role'=>(User::count() > 0 ? 1 : 0),
+				
+
+				]);
 
             }
 
@@ -74,7 +79,17 @@ class AuthController extends Controller
         if (isset($user))
         {
             $accessToken = $user->createToken('authToken')->accessToken;
-            return response(['user' => $user, 'token' => $accessToken,'message'=>"signedup"]);
+            return response(
+			
+			[
+			'user' => $user,
+			'token' => $accessToken,
+			'message'=>"signedup"
+			
+			]
+			
+			
+			);
         }
 
     }
@@ -113,7 +128,8 @@ class AuthController extends Controller
             return response()
                 ->json([
 				'token' => $tokenResult->accessToken,
-				'message'=>"loggedin"
+				'message'=>"loggedin",
+				'user'=>$user
 				]);
         }
 

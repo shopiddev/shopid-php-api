@@ -56,7 +56,7 @@ class ApiAuth implements AuthenticatesRequests
     protected function unauthenticated($request, array $guards)
     {
         throw new AuthenticationException(
-            'must login', $guards, $this->redirectTo($request)
+            '401', $guards, $this->redirectTo($request)
         );
     }
 
