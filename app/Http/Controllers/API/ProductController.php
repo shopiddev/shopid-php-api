@@ -18,4 +18,8 @@ class ProductController extends Controller
 				return $prod;
 				
 	}
+	
+	function listdev() {
+		return Product::latest()->take(5)->get();
+	}
 }

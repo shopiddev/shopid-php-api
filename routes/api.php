@@ -19,6 +19,9 @@ Route::post('/login', 'API\AuthController@login');
 
 Route::post('/addnew', 'API\ProductController@addnew');
 
+
+Route::get('/list', 'API\ProductController@listdev');
+
 Route::middleware('apiauth')->get('/user', function (Request $request) {
 	//sleep(6);
     return $request->user();
