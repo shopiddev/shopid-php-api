@@ -29,16 +29,38 @@ class ProductController extends Controller
 	}
 	
 	
-	function DeleteProduct(Request $request) {
+	function deleteProduct(Request $request) {
 		$prod = Product::find($request->id);
 		
 		if ($prod && $prod->delete()) {
-			return (array("message"=>"prod deleted"));
+			
+			    return response()->json(array("message"=>"prod deleted"), 200);
 		} else {
-			return (array("message"=>"NOT deleted!"));
+			    return response()->json(array("message"=>"NOT deleted"), 200);
 		}
 		
+		        
+		
 	}
+	
+	
+	
+	function updateProduct(Request $request) {
+		
+		
+                 $prod = Product::find($request->id);
+				
+				 $prod->title = $request->title;
+				 $prod->caption = $request->caption;
+				 $prod->save();
+
+                return response()->json(array("message"=>$prod->save()), 200);				 
+				
+				
+				
+	}
+	
+	
 	
 	
 }

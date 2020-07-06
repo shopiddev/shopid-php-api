@@ -20,7 +20,9 @@ Route::post('/login', 'API\AuthController@login');
 Route::post('/addnew', 'API\ProductController@addnew');
 
 
-Route::get('/product/{id}/delete', 'API\ProductController@DeleteProduct');
+Route::get('/product/{id}/delete', 'API\ProductController@deleteProduct');
+Route::post('/product/{id}/update', 'API\ProductController@updateProduct');
+
 Route::get('/product/{id}', 'API\ProductController@singleProduct');
 
 
