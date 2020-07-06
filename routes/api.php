@@ -20,7 +20,13 @@ Route::post('/login', 'API\AuthController@login');
 Route::post('/addnew', 'API\ProductController@addnew');
 
 
-Route::get('/list', 'API\ProductController@listdev');
+Route::get('/product/{id}/delete', 'API\ProductController@DeleteProduct');
+Route::get('/product/{id}', 'API\ProductController@singleProduct');
+
+
+Route::get('/list', 'API\ProductController@listOfProduct');
+
+
 
 Route::middleware('apiauth')->get('/user', function (Request $request) {
 	//sleep(6);

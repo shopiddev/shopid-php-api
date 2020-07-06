@@ -19,7 +19,26 @@ class ProductController extends Controller
 				
 	}
 	
-	function listdev() {
+	function listOfProduct() {
 		return Product::latest()->take(5)->get();
 	}
+	
+	
+	function singleProduct(Request $request) {
+		return Product::find($request->id);
+	}
+	
+	
+	function DeleteProduct(Request $request) {
+		$prod = Product::find($request->id);
+		
+		if ($prod && $prod->delete()) {
+			return (array("message"=>"prod deleted"));
+		} else {
+			return (array("message"=>"NOT deleted!"));
+		}
+		
+	}
+	
+	
 }
