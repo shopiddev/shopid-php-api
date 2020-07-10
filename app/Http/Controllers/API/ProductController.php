@@ -43,6 +43,27 @@ class ProductController extends Controller
 		
 	}
 	
+	function setProduct(Request $request) {
+		
+		         if ($request->id > 0) {
+				$prod = Product::find($request->id);
+				
+				 $prod->title = $request->title;
+				 $prod->caption = $request->caption;
+				 $prod->save();
+
+                return response()->json(array("message"=>$prod->save()), 200);		
+				 } else {
+					 
+				$prod = Product::create([
+                'title' => $request['title'], 'caption' => $request['caption'] , ]);
+				
+				return $prod;
+					 
+				 }
+			
+	}
+	
 	
 	
 	function updateProduct(Request $request) {

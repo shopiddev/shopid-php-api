@@ -18,10 +18,12 @@ Route::post('/register', 'API\AuthController@register');
 Route::post('/login', 'API\AuthController@login');
 
 Route::post('/addnew', 'API\ProductController@addnew');
+Route::post('/category', 'API\CategoryController@addnew');
 
 
 Route::get('/product/{id}/delete', 'API\ProductController@deleteProduct');
-Route::post('/product/{id}/update', 'API\ProductController@updateProduct');
+
+Route::post('/product/{id}', 'API\ProductController@setProduct');
 
 Route::get('/product/{id}', 'API\ProductController@singleProduct');
 
