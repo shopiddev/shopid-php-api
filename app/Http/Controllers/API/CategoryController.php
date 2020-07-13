@@ -8,6 +8,8 @@ use App\Category;
 
 class CategoryController extends Controller
 {
+	
+	
     function addnew(Request $request) {
 	
 		        $cat = Category::create([
@@ -17,6 +19,15 @@ class CategoryController extends Controller
 				
 	}
 	
+	
+	function list(Request $request) {
+	
+		 
+		  $cats = Category::where(['parent'=> $request->parent])->paginate(5, ['*'], 'page', $request->page);
+		  
+		  return $cats;
+		  
+	}
 	
 
 }

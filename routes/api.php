@@ -20,6 +20,8 @@ Route::post('/login', 'API\AuthController@login');
 Route::post('/addnew', 'API\ProductController@addnew');
 Route::post('/category', 'API\CategoryController@addnew');
 
+Route::get('/category/{parent}', 'API\CategoryController@list');
+
 
 Route::get('/product/{id}/delete', 'API\ProductController@deleteProduct');
 
