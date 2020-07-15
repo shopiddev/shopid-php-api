@@ -20,6 +20,22 @@ class CategoryController extends Controller
 	}
 	
 	
+		function update(Request $request) {
+		
+		
+                 $prod = Category::find($request->id);
+				
+				 $prod->title = $request->title;
+				
+				 $prod->save();
+
+                return response()->json(array("message"=>$prod->save()), 200);				 
+				
+				
+				
+	}
+	
+	
 	function list(Request $request) {
 	
 		 
@@ -27,6 +43,25 @@ class CategoryController extends Controller
 		  
 		  return $cats;
 		  
+	}
+	
+	
+		function deleteCategory(Request $request) {
+		
+		
+		$cat = Category::where(['parent'=> $request->id])->orWhere(['id'=> $request->id]);
+		
+
+		
+		if ($cat && $cat->delete()) {
+			
+			    return response()->json(array("message"=>"cat deleted"), 200);
+		} else {
+			    return response()->json(array("message"=>"cat Not deleted"), 200);
+		}
+		
+	      
+		
 	}
 	
 

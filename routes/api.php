@@ -18,8 +18,11 @@ Route::post('/register', 'API\AuthController@register');
 Route::post('/login', 'API\AuthController@login');
 
 Route::post('/addnew', 'API\ProductController@addnew');
-Route::post('/category', 'API\CategoryController@addnew');
 
+
+Route::get('/category/{id}/delete', 'API\CategoryController@deleteCategory');
+Route::post('/category/add', 'API\CategoryController@addnew');
+Route::post('/category/{id}/update', 'API\CategoryController@update');
 Route::get('/category/{parent}', 'API\CategoryController@list');
 
 
