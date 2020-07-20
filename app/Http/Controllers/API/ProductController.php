@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Product;
+use DB;
 
 class ProductController extends Controller
 {
@@ -52,15 +53,30 @@ class ProductController extends Controller
 				 $prod->caption = $request->caption;
 				 $prod->save();
 
-                return response()->json(array("message"=>$prod->save()), 200);		
+                $ret = response()->json(array("message"=>$prod->save()), 200);		
 				 } else {
 					 
 				$prod = Product::create([
                 'title' => $request['title'], 'caption' => $request['caption'] , ]);
-				
-				return $prod;
+			
+			
+				$ret = $prod;
 					 
 				 }
+				 
+				 
+				if (isset($request['cats'])) {
+									foreach ($request['cats'] as $cat) {
+										$product_category[] = 	['product_id' => $prod->id, 'category_id' => $cat];
+									}
+									
+									DB::table('product_category')->where('product_id', '=', $prod->id)->delete();
+				
+									DB::table('product_category')->insert($product_category);
+				}
+				 
+				 
+				 return $ret;
 			
 	}
 	
