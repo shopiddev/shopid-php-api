@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Product;
+use App\Category;
 use DB;
 
 class ProductController extends Controller
@@ -26,12 +27,25 @@ class ProductController extends Controller
 	
 	
 	function singleProduct(Request $request) {
-		return Product::find($request->id);
+		
+		$prod = Product::find($request->id);
+		
+		$prod->cats = DB::table('product_category',"category_id")->where('product_id', '=', $request->id)->get();
+		
+		return $prod;
 	}
 	
 	
 	function deleteProduct(Request $request) {
 		$prod = Product::find($request->id);
+		
+
+		
+		$cats = DB::table('product_category')->where('product_id', '=', $request->id);
+		
+		if ($cats) {
+			$cats->delete();
+		}
 		
 		if ($prod && $prod->delete()) {
 			
@@ -66,9 +80,30 @@ class ProductController extends Controller
 				 
 				 
 				if (isset($request['cats'])) {
+					
+					
+					
+					
+					
+
+					
+					foreach ($request['cats'] as $cat) {
+						
+						
+						$request['cats'] = array_merge($request['cats'],Category::getParents($cat));
+						
+						
+					}
+					
+					$request['cats'] = array_unique($request['cats']);
+
+					
 									foreach ($request['cats'] as $cat) {
+										
+										
 										$product_category[] = 	['product_id' => $prod->id, 'category_id' => $cat];
 									}
+									
 									
 									DB::table('product_category')->where('product_id', '=', $prod->id)->delete();
 				

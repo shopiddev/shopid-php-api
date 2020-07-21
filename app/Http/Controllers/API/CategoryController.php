@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Category;
+use DB;
 
 class CategoryController extends Controller
 {
@@ -50,6 +51,13 @@ class CategoryController extends Controller
 		
 		
 		$cat = Category::where(['parent'=> $request->id])->orWhere(['id'=> $request->id]);
+		
+		
+		$prod_cats = DB::table('product_category')->where('category_id', '=', $request->id);
+		
+		if ($prod_cats) {
+			$prod_cats->delete();
+		}
 		
 
 		
